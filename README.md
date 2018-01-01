@@ -75,6 +75,8 @@ $ make
 
 ### Dependencies
 
+*Note that the `.i686` or `:i386` suffixes are important, we need the 32bit libraries to use the 32bit dll.*
+
 | Fedora / RedHat       | Ubuntu / Debian        | Comment                      |
 | --------------------- | ---------------------- |:---------------------------- |
 | `glibc-devel.i686`    | `libc6-dev:i386`       |                              |
@@ -88,7 +90,7 @@ You will need to download the 32-bit antimalware update file from this page:
 
 This should be a direct link to the right file:
 
-* http://go.microsoft.com/fwlink/?LinkID=121721&arch=x86
+* https://go.microsoft.com/fwlink/?LinkID=121721&arch=x86
 
 This will download a file called `mpam-fe.exe`, which is a cabinet file that
 can be extracted with `cabextract`. Extract the files into the `engine`
@@ -168,6 +170,8 @@ Program received signal SIGTRAP, Trace/breakpoint trap.
 ```
 
 If you enter the commands it shows into gdb, you will have symbols available.
+
+> *Note that `genmapsym.sh` assumes you're using GNU awk.*
 
 ```
 (gdb) add-symbol-file engine/mpengine.dll 0xf6af4008+0x1000

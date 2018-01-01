@@ -84,6 +84,10 @@ static DWORD EngineScanCallback(PSCANSTRUCT Scan)
     if (Scan->Flags & 0x08000022) {
         LogMessage("Threat %s identified.", Scan->VirusName);
     }
+    // This may indicate PUA.
+    if ((Scan->Flags & 0x40010000) == 0x40010000) {
+        LogMessage("Threat %s identified.", Scan->VirusName);
+    }
     return 0;
 }
 
@@ -145,7 +149,9 @@ int main(int argc, char **argv, char **envp)
 
     // Load any additional exports.
     if (!process_extra_exports(image.image, PeHeader->OptionalHeader.BaseOfCode, "engine/mpengine.map")) {
+#ifndef NDEBUG
         LogMessage("The map file wasn't found, symbols wont be available");
+#endif
     } else {
         // Calculate the commands needed to get export and map symbols visible in gdb.
         if (IsDebuggerPresent()) {

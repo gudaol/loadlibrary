@@ -50,6 +50,21 @@ static LONG InterlockedDecrement(PULONG Addend)
     return --*Addend;
 }
 
+static LONG InterlockedIncrement(PULONG Addend)
+{
+    DebugLog("%p", Addend);
+    return ++*Addend;
+}
+
+static LONG InterlockedCompareExchange(PULONG Destination, LONG Exchange, LONG Comparand)
+{
+    DebugLog("%p", Destination);
+    if (*Destination == Comparand) {
+        *Destination = Exchange;
+    }
+    return *Destination;
+}
+
 static HANDLE WINAPI CreateSemaphoreW(PVOID lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, PWCHAR lpName)
 {
     char *name;
@@ -151,6 +166,12 @@ static BOOL WINAPI SetThreadToken(PHANDLE Thread, HANDLE Token)
     return FALSE;
 }
 
+static BOOL WINAPI ProcessIdToSessionId(DWORD dwProcessId, DWORD *pSessionId)
+{
+    DebugLog("");
+    return FALSE;
+}
+
 DECLARE_CRT_EXPORT("RtlNtStatusToDosError", RtlNtStatusToDosError);
 DECLARE_CRT_EXPORT("GetThreadTimes", GetThreadTimes);
 DECLARE_CRT_EXPORT("GetCurrentThread", GetCurrentThread);
@@ -161,6 +182,8 @@ DECLARE_CRT_EXPORT("GetCurrentProcess", GetCurrentProcess);
 DECLARE_CRT_EXPORT("LsaNtStatusToWinError", LsaNtStatusToWinError);
 DECLARE_CRT_EXPORT("SetThreadToken", SetThreadToken);
 DECLARE_CRT_EXPORT("InterlockedDecrement", InterlockedDecrement);
+DECLARE_CRT_EXPORT("InterlockedIncrement", InterlockedIncrement);
+DECLARE_CRT_EXPORT("InterlockedCompareExchange", InterlockedCompareExchange);
 DECLARE_CRT_EXPORT("CreateSemaphoreW", CreateSemaphoreW);
 DECLARE_CRT_EXPORT("AcquireSRWLockExclusive", AcquireSRWLockExclusive);
 DECLARE_CRT_EXPORT("InitializeSRWLock", InitializeSRWLock);
@@ -169,3 +192,4 @@ DECLARE_CRT_EXPORT("SetThreadpoolTimer", SetThreadpoolTimer);
 DECLARE_CRT_EXPORT("WaitForThreadpoolTimerCallbacks", WaitForThreadpoolTimerCallbacks);
 DECLARE_CRT_EXPORT("GetCurrentThreadId", GetCurrentThreadId);
 DECLARE_CRT_EXPORT("GetCurrentProcessId", GetCurrentProcessId);
+DECLARE_CRT_EXPORT("ProcessIdToSessionId", ProcessIdToSessionId);
